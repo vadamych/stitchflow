@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseIntPipe, Patch } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 
 @Controller('orders')
@@ -20,5 +20,8 @@ export class OrdersController {
     return this.ordersService.findOne(id);
   }
 
-  // TODO (задание): добавь PATCH /orders/:id/status
+  @Patch(':id/status')
+  updateStatus(@Param('id', ParseIntPipe) id: number, @Body() body: { status: string }) {
+    return this.ordersService.updateStatus(id, body.status);
+  }
 }

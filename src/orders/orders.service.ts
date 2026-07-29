@@ -37,5 +37,11 @@ export class OrdersService {
     return order;
   }
 
-  // TODO (задание): реализуй updateStatus(id, newStatus), переиспользуя findOne
+  updateStatus(id: number, newStatus: string): Order {
+    const order = this.findOne(id);
+    order.status = newStatus;
+    this.orders.filter((item) => item.id !== order.id);
+    this.orders.push(order);
+    return order;
+  }
 }

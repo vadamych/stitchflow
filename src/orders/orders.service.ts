@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { OrderStatus } from './order-status.enum';
+import { ALLOWED_TRANSITIONS } from './order-transitions';
 
 export interface Order {
   id: number;
@@ -40,7 +41,14 @@ export class OrdersService {
 
   updateStatus(id: number, newStatus: OrderStatus): Order {
     const order = this.findOne(id);
+    if (!this.canTransition(order.status, newStatus)) {
+      throw new BadRequestException(`Cannot transition from ${order.status} to ${newStatus}`);
+    }
     order.status = newStatus; // мутируем объект прямо в массиве
     return order;
+  }
+
+  canTransition(from: OrderStatus, to: OrderStatus): boolean {
+    return ALLOWED_TRANSITIONS[from].includes(to);
   }
 }

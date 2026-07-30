@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { OrderStatus } from './order-status.enum';
 
 export interface Order {
   id: number;
   clientName: string;
   garmentType: string;
-  status: string;
+  status: OrderStatus;
   isUrgent: boolean;
 }
 
@@ -18,7 +19,7 @@ export class OrdersService {
       id: this.idCounter++,
       clientName,
       garmentType,
-      status: 'NEW',
+      status: OrderStatus.NEW,
       isUrgent,
     };
     this.orders.push(order);
@@ -37,7 +38,7 @@ export class OrdersService {
     return order;
   }
 
-  updateStatus(id: number, newStatus: string): Order {
+  updateStatus(id: number, newStatus: OrderStatus): Order {
     const order = this.findOne(id);
     order.status = newStatus; // мутируем объект прямо в массиве
     return order;

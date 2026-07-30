@@ -1,13 +1,15 @@
 import { Controller, Get, Post, Body, Param, ParseIntPipe, Patch } from '@nestjs/common';
 import { OrdersService } from './orders.service';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() body: { clientName: string; garmentType: string; isUrgent: boolean }) {
-    return this.ordersService.create(body.clientName, body.garmentType, body.isUrgent);
+  create(@Body() dto: CreateOrderDto) {
+    return this.ordersService.create(dto.clientName, dto.garmentType, dto.isUrgent);
   }
 
   @Get()
@@ -21,7 +23,7 @@ export class OrdersController {
   }
 
   @Patch(':id/status')
-  updateStatus(@Param('id', ParseIntPipe) id: number, @Body() body: { status: string }) {
-    return this.ordersService.updateStatus(id, body.status);
+  updateStatus(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateOrderStatusDto) {
+    return this.ordersService.updateStatus(id, dto.status);
   }
 }

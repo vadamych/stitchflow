@@ -10,8 +10,9 @@ import { JwtStrategy } from './jwt.strategy';
 @Module({
   imports: [
     UsersModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }), // ← отдельно, на верхнем уровне
     JwtModule.registerAsync({
-      imports: [ConfigModule, PassportModule.register({ defaultStrategy: 'jwt' })],
+      imports: [ConfigModule], // здесь только то, что нужно useFactory
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),

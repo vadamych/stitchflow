@@ -2,11 +2,6 @@ import { IsString, IsNotEmpty, IsBoolean, IsIn, MinLength } from 'class-validato
 
 export class CreateOrderDto {
   @IsString()
-  @IsNotEmpty()
-  @MinLength(2)
-  clientName: string;
-
-  @IsString()
   @IsIn(['Hoodie', 'Shirt', 'Polo'])
   garmentType: string;
 

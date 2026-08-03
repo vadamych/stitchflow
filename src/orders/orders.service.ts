@@ -11,9 +11,9 @@ export class OrdersService {
     private readonly orderModel: typeof OrderModel,
   ) {}
 
-  async create(clientName: string, garmentType: string, isUrgent: boolean): Promise<OrderModel> {
+  async create(clientId: number, garmentType: string, isUrgent: boolean): Promise<OrderModel> {
     return this.orderModel.create({
-      clientName,
+      clientId,
       garmentType,
       isUrgent,
       status: OrderStatus.NEW,

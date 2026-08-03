@@ -6,8 +6,6 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 
-const SALT_ROUNDS = 10;
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -16,8 +14,7 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    const passwordHash = await bcrypt.hash(dto.password, SALT_ROUNDS);
-    const user = await this.usersService.create(dto.fullName, dto.email, passwordHash, Role.CLIENT);
+    const user = await this.usersService.create(dto.fullName, dto.email, dto.password, Role.CLIENT);
 
     const payload = { sub: user.id, email: user.email, role: user.role };
     const accessToken = this.jwtService.sign(payload);

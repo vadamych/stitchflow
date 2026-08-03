@@ -21,19 +21,19 @@ export class OrdersController {
 
   @Get()
   @Roles(Role.ADMIN, Role.DESIGNER, Role.MANAGER, Role.WAREHOUSE_WORKER, Role.CLIENT)
-  findAll() {
-    return this.ordersService.findAll();
+  findAll(@Req() req: AuthenticatedRequest) {
+    return this.ordersService.findAll(req.user.userId, req.user.role);
   }
 
   @Get(':id')
   @Roles(Role.ADMIN, Role.DESIGNER, Role.MANAGER, Role.WAREHOUSE_WORKER, Role.CLIENT)
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.ordersService.findOne(id);
+  findOne(@Param('id', ParseIntPipe) id: number, @Req() req: AuthenticatedRequest) {
+    return this.ordersService.findOne(req.user.userId, req.user.role, id);
   }
 
   @Patch(':id/status')
   @Roles(Role.ADMIN, Role.DESIGNER, Role.MANAGER, Role.WAREHOUSE_WORKER, Role.CLIENT)
-  updateStatus(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateOrderStatusDto) {
-    return this.ordersService.updateStatus(id, dto.status);
+  updateStatus(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateOrderStatusDto, @Req() req: AuthenticatedRequest) {
+    return this.ordersService.updateStatus(req.user.userId, req.user.role, id, dto.status);
   }
 }
